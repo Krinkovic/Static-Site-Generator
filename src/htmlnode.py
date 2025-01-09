@@ -38,8 +38,23 @@ class LeafNode(HTMLNode):
             return self.value
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
-def main():
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props=None):
+        super().__init__(tag, None, children, props)
 
+    def to_html(self):
+        if self.tag == None:
+            raise ValueError("Tag required")
+        if self.children == None:
+            raise ValueError("At least 1 child node required")
+        
+        if len(self.children) == 1:
+            return f"<{self.children[0].tag}>{self.children[0].to_html()}</{self.children[0].tag}>"
+        
+        return f"<{self.tag}>{self.children[0].to_html() + ParentNode(self.tag, self.children[1:], self.props).to_html()}</{self.tag}>"
+
+def main():
+    """
     testnode = LeafNode("a", "Hello assholes!", {"href" : "www.assholes.com"})
     testnode2 = LeafNode("a", "Hello assholes!", {"href" : "www.assholes.com", "layout" : "ugly"})
     testnode3 = LeafNode("p", "Hello Muthafuckas!")
@@ -47,6 +62,11 @@ def main():
     print(testnode.to_html())
     print(testnode2.to_html())
     print(testnode3.to_html())
-
+    """
+    node1 = LeafNode("a", "Blahadiblaa", {"href" : "www.testsite.com"})
+    node2 = LeafNode(None, "Blahadiblaa", None) #LeafNode("a", "Blahadiblaa", {"href" : "www.testsite.com"})
+    node3 = LeafNode(None, "Blahadiblaa", None)
+    parent = ParentNode("p", [node1, node2, node3])
+    print(parent.to_html())
 if __name__ == "__main__":
     main()
