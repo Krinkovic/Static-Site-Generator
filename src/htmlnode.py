@@ -30,13 +30,17 @@ class HTMLNode:
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
         super().__init__(tag, value, None, props)
-        
+
+    def __repr__(self):
+        return f"LeafNode({self.tag}, {self.value}, {self.children}, {self.props})"
+          
     def to_html(self):
         if self.value == None:
             raise ValueError("Value required")
         if self.tag == None:
             return self.value
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+
 
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
@@ -48,10 +52,17 @@ class ParentNode(HTMLNode):
         if self.children == None:
             raise ValueError("At least 1 child node required")
         
-        if len(self.children) == 1:
-            return f"<{self.children[0].tag}>{self.children[0].to_html()}</{self.children[0].tag}>"
-        
-        return f"<{self.tag}>{self.children[0].to_html() + ParentNode(self.tag, self.children[1:], self.props).to_html()}</{self.tag}>"
+        print(self.props_to_html())
+        return f"<{self.tag}>{self.props_to_html()}{children_to_html(self.children)}</{self.tag}>"
+
+def children_to_html(child_list):
+    if len(child_list) == 0:
+        return ""
+    print(child_list[0])
+    children_string = ""
+    children_string = child_list[0].to_html() + children_to_html(child_list[1:])
+    print(children_string)
+    return children_string
 
 def main():
     """
@@ -63,10 +74,10 @@ def main():
     print(testnode2.to_html())
     print(testnode3.to_html())
     """
-    node1 = LeafNode("a", "Blahadiblaa", {"href" : "www.testsite.com"})
-    node2 = LeafNode(None, "Blahadiblaa", None) #LeafNode("a", "Blahadiblaa", {"href" : "www.testsite.com"})
-    node3 = LeafNode(None, "Blahadiblaa", None)
-    parent = ParentNode("p", [node1, node2, node3])
+    node1 = LeafNode("a", "Hey Asshole", {"href" : "www.testsite.com"})
+    node2 = LeafNode("c", "Whatcha want", None)
+    node3 = LeafNode("t", "Nothin", None)
+    parent = ParentNode("p", [node1, node2, node3], {"class" : "testclass"})
     print(parent.to_html())
 if __name__ == "__main__":
     main()
