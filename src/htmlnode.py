@@ -53,7 +53,7 @@ class ParentNode(HTMLNode):
             raise ValueError("At least 1 child node required")
         
         print(self.props_to_html())
-        return f"<{self.tag}>{self.props_to_html()}{children_to_html(self.children)}</{self.tag}>"
+        return f"<{self.tag}{self.props_to_html()}>{children_to_html(self.children)}</{self.tag}>"
 
 def children_to_html(child_list):
     if len(child_list) == 0:
