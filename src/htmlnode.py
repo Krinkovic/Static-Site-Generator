@@ -65,19 +65,7 @@ def children_to_html(child_list):
     return children_string
 
 def main():
-    """
-    testnode = LeafNode("a", "Hello assholes!", {"href" : "www.assholes.com"})
-    testnode2 = LeafNode("a", "Hello assholes!", {"href" : "www.assholes.com", "layout" : "ugly"})
-    testnode3 = LeafNode("p", "Hello Muthafuckas!")
-
-    print(testnode.to_html())
-    print(testnode2.to_html())
-    print(testnode3.to_html())
-    """
-    node1 = LeafNode("a", "Hey Asshole", {"href" : "www.testsite.com"})
-    node2 = LeafNode("c", "Whatcha want", None)
-    node3 = LeafNode("t", "Nothin", None)
-    parent = ParentNode("p", [node1, node2, node3], {"class" : "testclass"})
-    print(parent.to_html())
+    node1 = LeafNode(None, "Hello").to_html()
+    print(node1)
 if __name__ == "__main__":
     main()
