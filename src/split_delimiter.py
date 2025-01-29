@@ -12,8 +12,8 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             subnodes = text.split(delimiter, 2)
             if len(subnodes) < 3:
                 raise Exception("Invalid syntax. No closing delimiter")
-            subnodes[0] = TextNode(subnodes[0], TextType.TEXT)
-            subnodes[2] = TextNode(subnodes[2], TextType.TEXT)
+            subnodes[0] = TextNode(subnodes[0], text_type)
+            subnodes[2] = TextNode(subnodes[2], text_type)
             match delimiter:
                 case "*":
                     subnodes[1] = TextNode(subnodes[1], TextType.ITALIC)
