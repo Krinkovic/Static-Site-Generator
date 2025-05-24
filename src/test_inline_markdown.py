@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode, TextType
-from split_delimiter import split_nodes_delimiter
+from inline_markdown import *
 
 class TestTextNode(unittest.TestCase):
     def test_text(self):
@@ -40,6 +40,17 @@ class TestTextNode(unittest.TestCase):
             split_nodes_delimiter([node1], "*", TextType.ITALIC)
         except Exception as e:
             self.assertEqual("Invalid syntax. No closing delimiter", str(e))
+
+class TestText_Extraction(unittest.TestCase):
+    text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg) and this is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+ 
+    def test_image(self):
+        self.text
+        self.assertEqual(extract_markdown_images(self.text), [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")])
+
+    def test_link(self):
+        self.text
+        self.assertEqual(extract_markdown_links(self.text), [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")])
 
 
 if __name__ == "__main__":
