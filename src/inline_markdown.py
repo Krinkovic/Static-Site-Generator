@@ -16,7 +16,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 if sections[i] == "":
                     continue
                 if i % 2 == 0:
-                    new_nodes.append(TextNode(sections[i], text_type.TEXT))
+                    new_nodes.append(TextNode(sections[i], TextType.TEXT))
                 else:
                     new_nodes.append(TextNode(sections[i], text_type))
     return new_nodes
@@ -43,7 +43,7 @@ def split_links_images(old_nodes):
                 if sections[i] == "":
                     continue
                 if i % 2 == 0:
-                    new_nodes.append(TextNode(sections[i], text_type.TEXT))
+                    new_nodes.append(TextNode(sections[i], TextType.TEXT))
                 else:
                     new_nodes.append(TextNode(sections[i], text_type))
     return new_nodes
