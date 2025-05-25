@@ -30,6 +30,24 @@ def extract_markdown_links(text):
     matches = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
     return matches
 
+
+def split_links_images(old_nodes):
+#    if 1 == 1: return
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(old_node)
+        else:
+            sections = node.text.split()
+            for i in range(len(sections)):
+                if sections[i] == "":
+                    continue
+                if i % 2 == 0:
+                    new_nodes.append(TextNode(sections[i], text_type.TEXT))
+                else:
+                    new_nodes.append(TextNode(sections[i], text_type))
+    return new_nodes
+
 def split_nodes_image(old_nodes):
     pass
     for node in old_nodes:
@@ -38,25 +56,14 @@ def split_nodes_image(old_nodes):
 def split_nodes_link(old_nodes):
     pass
 
-"""
-def extract_markdown_images(text):
-    pattern = r"!\[(.*?)\]\((.*?)\"
-    matches = re.findall(text, pattern)
-    return matches
-
-def extract_markdown_links(text):
-    pattern = r"(?<!!)\[(.*?)\]\((.*?)\)"
-    matches = re.findall(text, pattern)
-    return matches
-
-#oops, I had already done this assignment
-"""
-
-
 def main():
-    print("Hello")
-    text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm3Vk.jpeg)"
-    print(extract_markdown_images(text))
+    node1 = TextNode("This is text with a ![Rick & Morty](https://i.imagehub.com/aKaOqIh.gif) and ![Teletubbies](https://i.photobomb.com/fJRm3Vk.jpeg)", TextType.TEXT)
+    node2 = TextNode("This is text with a ![rick roll](https://i.imgur.com/gwur3nif09sd.gif) and ![obi wan](https://photobucket.com/picture.jpeg)", TextType.TEXT)
+    old_nodes = [node1, node2]
+
+    print(split_links_images(old_nodes))
+
+    print(extract_markdown_images(node1))
 
 if __name__ == "__main__":
     main()
