@@ -36,8 +36,9 @@ def split_links_images(old_nodes):
     new_nodes = []
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
-            new_nodes.append(old_node)
+            new_nodes.append(node)
         else:
+# fix below this line
             sections = node.text.split()
             for i in range(len(sections)):
                 if sections[i] == "":
