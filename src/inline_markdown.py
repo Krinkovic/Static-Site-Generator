@@ -6,7 +6,7 @@ import re
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for old_node in old_nodes:
-        if old_node.text_type != TextType.TEXT:
+        if old_node.text_type != TextType.TEXT: # if not text, do nothing
             new_nodes.append(old_node)
         else:
             sections = old_node.text.split(delimiter)
