@@ -22,12 +22,13 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 def extract_markdown_images(text):
-    matches = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    pattern = r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
+    matches = re.findall(pattern, text)
     return matches
 
 def extract_markdown_links(text):
-    
-    matches = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    pattern = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
+    matches = re.findall(pattern, text)
     return matches
 
 
@@ -38,16 +39,35 @@ def split_links_images(old_nodes):
         if node.text_type != TextType.TEXT:
             new_nodes.append(node)
         else:
-# fix below this line
-            sections = node.text.split()
-            for i in range(len(sections)):
-                if sections[i] == "":
-                    continue
-                if i % 2 == 0:
-                    new_nodes.append(TextNode(sections[i], TextType.TEXT))
-                else:
-                    new_nodes.append(TextNode(sections[i], text_type))
-    return new_nodes
+            text = node.text
+            images = extract_markdown_images(text)
+            if images == []:
+                new_nodes.append(node)
+                continue
+# Need to reinsert the extracted images in the correct place in the lists
+            sections = [text]
+            for image in images:
+                new_sections = []
+                for section in sections:
+                    splits = section.split(f"![{image[0]}]({image[1]})")
+                    for split in splits:
+                        if split == "":
+                            continue
+                        new_sections.append(split)
+                sections = new_sections
+            print(sections)
+#            pass
+#                if section == "":
+#                    continue
+#                    sections = node.text.split(f"![{image[0]}]({image[1]})")
+#
+#                return
+#                for i in range(len(sections)):
+#                    if i % 2 == 0:
+#                        new_nodes.append(TextNode(sections[i], TextType.TEXT))
+#                    else:
+#                        new_nodes.append(TextNode(sections[i], text_type))
+#    return new_nodes
 
 def split_nodes_image(old_nodes):
     pass
@@ -62,9 +82,9 @@ def main():
     node2 = TextNode("This is text with a ![rick roll](https://i.imgur.com/gwur3nif09sd.gif) and ![obi wan](https://photobucket.com/picture.jpeg)", TextType.TEXT)
     old_nodes = [node1, node2]
 
-    print(split_links_images(old_nodes))
+    split_links_images(old_nodes)
 
-    print(extract_markdown_images(node1))
+    #print(extract_markdown_images(node1))
 
 if __name__ == "__main__":
     main()
