@@ -33,7 +33,6 @@ def extract_markdown_links(text):
 
 
 def split_links_images(old_nodes):
-#    if 1 == 1: return
     new_nodes = []
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
@@ -44,30 +43,18 @@ def split_links_images(old_nodes):
             if images == []:
                 new_nodes.append(node)
                 continue
-# Need to reinsert the extracted images in the correct place in the lists
             sections = [text]
             for image in images:
-                new_sections = []
-                for section in sections:
-                    splits = section.split(f"![{image[0]}]({image[1]})")
-                    for split in splits:
-                        if split == "":
-                            continue
-                        new_sections.append(split)
-                sections = new_sections
-            print(sections)
-#            pass
-#                if section == "":
-#                    continue
-#                    sections = node.text.split(f"![{image[0]}]({image[1]})")
-#
-#                return
-#                for i in range(len(sections)):
-#                    if i % 2 == 0:
-#                        new_nodes.append(TextNode(sections[i], TextType.TEXT))
-#                    else:
-#                        new_nodes.append(TextNode(sections[i], text_type))
-#    return new_nodes
+                last_section = sections.pop()
+                splits = last_section.split(f"![{image[0]}]({image[1]})", 1)
+                sections = sections + [TextNode(splits[0], TextType.TEXT), TextNode(image[0], TextType.IMAGE, image[1]), splits[1]]
+            last_section = TextNode(sections.pop(), TextType.TEXT)
+            sections.append(last_section)
+            for section in sections:
+                if section.text == "":
+                    continue
+                new_nodes.append(section)
+    return new_nodes
 
 def split_nodes_image(old_nodes):
     pass
@@ -78,7 +65,7 @@ def split_nodes_link(old_nodes):
     pass
 
 def main():
-    node1 = TextNode("This is text with a ![Rick & Morty](https://i.imagehub.com/aKaOqIh.gif) and ![Teletubbies](https://i.photobomb.com/fJRm3Vk.jpeg)", TextType.TEXT)
+    node1 = TextNode("This is text with an image of ![Rick & Morty](https://i.imagehub.com/aKaOqIh.gif) and the ![Teletubbies](https://i.photobomb.com/fJRm3Vk.jpeg)", TextType.TEXT)
     node2 = TextNode("This is text with a ![rick roll](https://i.imgur.com/gwur3nif09sd.gif) and ![obi wan](https://photobucket.com/picture.jpeg)", TextType.TEXT)
     old_nodes = [node1, node2]
 
