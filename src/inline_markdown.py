@@ -32,7 +32,7 @@ def extract_markdown_links(text):
     return matches
 
 
-def split_links_images(old_nodes):
+def split_nodes_images(old_nodes):
     new_nodes = []
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
@@ -69,7 +69,7 @@ def main():
     node2 = TextNode("This is text with a ![rick roll](https://i.imgur.com/gwur3nif09sd.gif) and ![obi wan](https://photobucket.com/picture.jpeg)", TextType.TEXT)
     old_nodes = [node1, node2]
 
-    split_links_images(old_nodes)
+    print(split_nodes_images(old_nodes))
 
     #print(extract_markdown_images(node1))
 

@@ -50,6 +50,40 @@ class TestText_Extraction(unittest.TestCase):
     def test_link(self):
         self.assertEqual(extract_markdown_links(self.text), [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")])
 
+class TestSplit_nodes_images(unittest.TestCase):
+
+    def test_2nodes_4images(self):
+        node1 = TextNode("This is text with an image of ![Rick & Morty](https://i.imagehub.com/aKaOqIh.gif) and the ![Teletubbies](https://i.photobomb.com/fJRm3Vk.jpeg)", TextType.TEXT)
+        node2 = TextNode("This is text with a ![rick roll](https://i.imgur.com/gwur3nif09sd.gif) and ![obi wan](https://photobucket.com/picture.jpeg)", TextType.TEXT)
+        old_nodes = [node1, node2]
+        self.assertEqual(
+            split_nodes_images(old_nodes),
+            [
+                "TextNode(This is text with an image of , TextType.TEXT, None)",
+                "TextNode(Rick & Morty, TextType.IMAGE, https://i.imagehub.com/aKaOqIh.gif)",
+                "TextNode( and the , TextType.TEXT, None)",
+                "TextNode(Teletubbies, TextType.IMAGE, https://i.photobomb.com/fJRm3Vk.jpeg)",
+                "TextNode(This is text with a , TextType.TEXT, None)",
+                "TextNode(rick roll, TextType.IMAGE, https://i.imgur.com/gwur3nif09sd.gif)",
+                "TextNode( and , TextType.TEXT, None)",
+                "TextNode(obi wan, TextType.IMAGE, https://photobucket.com/picture.jpeg)"
+            ]
+        )
+    def test_incorrect_format(self):
+        pass
+    def test3(self):
+        pass
+    def test4(self):
+        pass
+    def test5(self):
+        pass
+    def test6(self):
+        pass
+    def test7(self):
+        pass
+    def test8(self):
+        pass
+        
 
 if __name__ == "__main__":
     unittest.main()
